@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "memcrab"
+version = "0.0.1"
+description = "Memcrab Python Client"
+authors = ["Your Name <you@example.com>"]
+license = "Apache-2.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.3.0"
+mypy = "^1.8.0"
+pyright = "^1.1.352"
+pytest = "^8.0.2"
+black = "^24.2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
