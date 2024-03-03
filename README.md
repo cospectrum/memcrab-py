@@ -1,6 +1,10 @@
 # memcrab-py
 Memcrab Python Client
 
+```sh
+pip install memcrab
+```
+
 ## Usage
 
 ### Tcp
