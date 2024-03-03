@@ -3,7 +3,7 @@ from __future__ import annotations
 import socket
 
 from dataclasses import dataclass
-from memcrab.parsing import Request, Response, ResponseKind, Parser, HEADER_SIZE
+from memcrab.parsing import Request, Response, Parser, HEADER_SIZE
 
 
 @dataclass
@@ -13,11 +13,10 @@ class Tcp:
     _closed: bool
 
     def call(self, request: Request) -> Response:
-        send = self.parser.encode(request)
+        send = self.parser.encode_request(request)
         self.sock.sendall(send)
         header_bytes = self.read_exact(HEADER_SIZE)
         kind, payload_len = self.parser.decode_header(header_bytes)
-        assert isinstance(kind, ResponseKind)
         payload = self.read_exact(payload_len)
         return self.parser.decode_response(kind, payload)
 

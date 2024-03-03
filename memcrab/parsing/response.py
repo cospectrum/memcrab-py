@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
+from abc import ABC
 from dataclasses import dataclass
 from enum import Enum
 
@@ -35,56 +35,26 @@ class ResponseKind(Enum):
 
 
 class Response(ABC):
-    @abstractmethod
-    def kind(self) -> ResponseKind:
-        raise TypeError
-
-    @abstractmethod
-    def payload(self) -> bytes:
-        raise TypeError
+    pass
 
 
 class Pong(Response):
-    def kind(self) -> ResponseKind:
-        return ResponseKind.Pong
-
-    def payload(self) -> bytes:
-        return bytes()
+    pass
 
 
 class Ok(Response):
-    def kind(self) -> ResponseKind:
-        return ResponseKind.Ok
-
-    def payload(self) -> bytes:
-        return bytes()
+    pass
 
 
 @dataclass
 class Value(Response):
     inner: bytes
 
-    def kind(self) -> ResponseKind:
-        return ResponseKind.Value
-
-    def payload(self) -> bytes:
-        return self.inner
-
 
 class KeyNotFound(Response):
-    def kind(self) -> ResponseKind:
-        return ResponseKind.KeyNotFound
-
-    def payload(self) -> bytes:
-        return bytes()
+    pass
 
 
 @dataclass
 class Error(Response):
     msg: str
-
-    def kind(self) -> ResponseKind:
-        return ResponseKind.Error
-
-    def payload(self) -> bytes:
-        return self.msg.encode()

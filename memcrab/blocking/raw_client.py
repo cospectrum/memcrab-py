@@ -10,8 +10,7 @@ from .connections import Tcp
 
 
 class Rpc(Protocol):
-    def call(self, request: Request) -> Response:
-        ...
+    def call(self, request: Request) -> Response: ...
 
 
 C = TypeVar("C", bound=Rpc)
@@ -27,8 +26,7 @@ class RawClient(Generic[C]):
         return RawClient(conn)
 
     def ping(self) -> None:
-        resp = self.conn.call(Ping())
-        match resp:
+        match self.conn.call(Ping()):
             case Pong():
                 return None
             case _:
