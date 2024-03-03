@@ -15,22 +15,6 @@ class RequestKind(Enum):
     Delete = 3
     Clear = 4
 
-    @classmethod
-    def from_val(cls, val: int) -> RequestKind:
-        match val:
-            case cls.Ping.value:
-                return cls.Ping
-            case cls.Get.value:
-                return cls.Get
-            case cls.Set.value:
-                return cls.Set
-            case cls.Delete.value:
-                return cls.Delete
-            case cls.Clear.value:
-                return cls.Clear
-            case _:
-                raise ValueError
-
     def flag(self) -> U8:
         return U8(self.value)
 
