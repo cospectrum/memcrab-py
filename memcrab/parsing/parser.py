@@ -27,7 +27,10 @@ class Parser:
         flag = msg.kind().flag().be()
         payload = msg.payload()
         payload_len = U64(len(payload)).be()
-        return flag + payload_len + payload
+        header = flag + payload_len
+        if len(payload) == 0:
+            return header
+        return header + payload
 
     def decode(self, kind: MsgKind, payload: bytes) -> Msg:
         if isinstance(kind, RequestKind):

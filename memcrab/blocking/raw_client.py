@@ -3,8 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Generic, Protocol, TypeVar
 from memcrab.parsing import Request, Response
-from memcrab.parsing.request import Get, Set
-from memcrab.parsing.response import Error, KeyNotFound, Ok, Value
+from memcrab.parsing.request import Get, Ping, Set
+from memcrab.parsing.response import KeyNotFound, Ok, Pong, Value
 
 from .connections import Tcp
 
@@ -22,9 +22,17 @@ class RawClient(Generic[C]):
     conn: C
 
     @staticmethod
-    def tcp(addr: str) -> RawClient[Tcp]:
+    def tcp(addr: tuple[str, int]) -> RawClient[Tcp]:
         conn = Tcp.connect(addr)
         return RawClient(conn)
+    
+    def ping(self) -> None:
+        resp = self.conn.call(Ping())
+        match resp:
+            case Pong():
+                return None
+            case _:
+                raise ValueError('ping failed')
 
     def get(self, key: str) -> bytes | None:
         resp = self.conn.call(Get(key))
@@ -37,13 +45,11 @@ class RawClient(Generic[C]):
                 hint = f'unexpected msg: {msg}'
                 raise TypeError(hint)
 
-    def set(self, key: str, val: bytes) -> None | Error:
+    def set(self, key: str, val: bytes) -> None:
         resp = self.conn.call(Set(key=key, val=val))
         match resp:
             case Ok():
                 return None
-            case Error():
-                return resp
             case msg:
-                hint = f'unexpected msg: {msg}'
+                hint = f'unexpected response: {msg}'
                 raise TypeError(hint)
