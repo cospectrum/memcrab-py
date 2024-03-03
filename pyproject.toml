@@ -2,7 +2,7 @@
 name = "memcrab"
 version = "0.0.1"
 description = "Memcrab Python Client"
-authors = ["Your Name <you@example.com>"]
+authors = ["cospectrum <severinalexeyv@gmail.com>"]
 license = "Apache-2.0"
 readme = "README.md"
 
