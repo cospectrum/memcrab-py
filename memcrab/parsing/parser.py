@@ -44,8 +44,10 @@ class Parser:
             return slice[:at], slice[at:]
 
         match kind:
-            case Kind.Ping: return Ping()
-            case Kind.Get: return Get(payload.decode())
+            case Kind.Ping:
+                return Ping()
+            case Kind.Get:
+                return Get(payload.decode())
             case Kind.Set:
                 klen_bytes, tail = split_at(payload, KeyLen.sizeof())
                 exp_bytes, tail = split_at(tail, Expiration.sizeof())
@@ -55,14 +57,21 @@ class Parser:
                 key, val = split_at(tail, klen.inner)
                 return Set(key=key.decode(), val=val, expiration=expiration.inner)
 
-            case Kind.Clear: return Clear()
-            case Kind.Delete: return Delete(payload.decode())
+            case Kind.Clear:
+                return Clear()
+            case Kind.Delete:
+                return Delete(payload.decode())
 
     def decode_response(self, kind: ResponseKind, payload: bytes) -> Response:
         Kind = ResponseKind
         match kind:
-            case Kind.Ok: return Ok()
-            case Kind.Pong: return Pong()
-            case Kind.KeyNotFound: return KeyNotFound()
-            case Kind.Value: return Value(payload)
-            case Kind.Error: return Error(msg=payload.decode())
+            case Kind.Ok:
+                return Ok()
+            case Kind.Pong:
+                return Pong()
+            case Kind.KeyNotFound:
+                return KeyNotFound()
+            case Kind.Value:
+                return Value(payload)
+            case Kind.Error:
+                return Error(msg=payload.decode())

@@ -17,11 +17,16 @@ class RequestKind(Enum):
     @classmethod
     def from_val(cls, val: int) -> RequestKind:
         match val:
-            case cls.Ping.value: return cls.Ping
-            case cls.Get.value: return cls.Get
-            case cls.Set.value: return cls.Set
-            case cls.Delete.value: return cls.Delete
-            case cls.Clear.value: return cls.Clear
+            case cls.Ping.value:
+                return cls.Ping
+            case cls.Get.value:
+                return cls.Get
+            case cls.Set.value:
+                return cls.Set
+            case cls.Delete.value:
+                return cls.Delete
+            case cls.Clear.value:
+                return cls.Clear
             case _:
                 raise ValueError
 
@@ -33,21 +38,27 @@ class Request(ABC):
     @abstractmethod
     def payload(self) -> bytes:
         raise TypeError
+
     @abstractmethod
     def kind(self) -> RequestKind:
         raise TypeError
 
+
 class Ping(Request):
     def kind(self) -> RequestKind:
         return RequestKind.Ping
+
     def payload(self) -> bytes:
         return bytes()
+
 
 @dataclass
 class Get(Request):
     key: str
+
     def kind(self) -> RequestKind:
         return RequestKind.Get
+
     def payload(self) -> bytes:
         return self.key.encode()
 
@@ -57,8 +68,10 @@ class Set(Request):
     key: str
     val: bytes
     expiration: int = 0
+
     def kind(self) -> RequestKind:
         return RequestKind.Set
+
     def payload(self) -> bytes:
         key = self.key.encode()
         klen = U64(len(key)).be()
@@ -69,8 +82,10 @@ class Set(Request):
 @dataclass
 class Delete(Request):
     key: str
+
     def kind(self) -> RequestKind:
         return RequestKind.Delete
+
     def payload(self) -> bytes:
         return self.key.encode()
 
@@ -78,5 +93,6 @@ class Delete(Request):
 class Clear(Request):
     def kind(self) -> RequestKind:
         return RequestKind.Clear
+
     def payload(self) -> bytes:
         return bytes()

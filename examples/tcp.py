@@ -8,3 +8,9 @@ client.ping()
 client.set("letters", b"ABC")
 val = client.get("letters")
 print(f"{val=}")
+
+client.delete("letters")
+val = client.get("letters")
+print(f"{val=}")
+
+client.clear()
