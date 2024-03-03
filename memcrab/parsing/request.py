@@ -4,7 +4,8 @@ from enum import Enum
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 
-from .utils import U32, U64, U8
+from .aliases import Expiration, KeyLen
+from .utils import U8
 
 
 class RequestKind(Enum):
@@ -74,8 +75,8 @@ class Set(Request):
 
     def payload(self) -> bytes:
         key = self.key.encode()
-        klen = U64(len(key)).be()
-        exp = U32(self.expiration).be()
+        klen = KeyLen(len(key)).be()
+        exp = Expiration(self.expiration).be()
         return klen + exp + key + self.val
 
 
